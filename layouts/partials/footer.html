@@ -1,6 +1,4 @@
 <footer>
-    {{ if site.Params.theme_config.isShowFooter }}
-        {{ $footerContent := readFile "layouts/footer.md" }}
-        {{ $footerContent | markdownify }}
-    {{ end }}
-</div>
+    {{ $footerContent := readFile "layouts/footer.md" }}
+    {{ $footerContent | markdownify }}
+</footer>

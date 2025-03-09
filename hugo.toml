@@ -1,7 +1,8 @@
 baseURL = 'https://abramov.blog/'
 languageCode = 'ru-ru'
 title = 'Abramov blog'
-
+disableKinds = ['taxonomy', 'sitemap',]
+enableRobotsTXT = true
 
 [module]
 [module.hugoVersion]
@@ -18,7 +19,7 @@ title = true
 [markup.highlight]
 anchorLineNos = false
 codeFences = true
-guessSyntax = false
+guessSyntax = true
 hl_Lines = ''
 hl_inline = false
 lineAnchors = ''
@@ -27,7 +28,7 @@ lineNos = false
 lineNumbersInTable = true
 noClasses = true
 noHl = false
-style = 'rrt'
+style = 'monokai'
 tabWidth = 4
 
 [markup.tableOfContents]
@@ -37,8 +38,5 @@ ordered = false
 
 [params]
 [params.theme_config]
-appearance = "auto"
-back_home_text = ".."
 date_format = "2006-01-02"
 isListGroupByDate = false
-isShowFooter = true
