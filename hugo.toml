@@ -38,5 +38,5 @@ ordered = false
 
 [params]
 [params.theme_config]
-date_format = "2006-01-02"
+date_format = "02.01.2006"
 isListGroupByDate = false
