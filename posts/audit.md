@@ -6,6 +6,10 @@ source = 'https://github.com/w0rng/audit'
 tags = ['go', 'audit', 'logging', 'slog']
 +++
 
+___
+Версия на английском: [dev.to](https://dev.to/w0rng/audit-practical-audit-logging-for-go-5ae9)
+___
+
 Audit-логирование почти всегда появляется позже, чем нужно. Сначала хватает обычных логов, потом внезапно становится важно понять, кто именно поменял статус заказа, почему у пользователя пропала роль или откуда взялись странные данные в системе.
 
 В большинстве проектов audit либо размазывается по бизнес-коду, либо пытается жить поверх обычного логгера без четкой модели. Я вынес эту задачу в отдельную библиотеку: **audit**.
@@ -75,21 +79,9 @@ logs := logger.Logs("order:12345")
 [
   {
     "Fields": [
-      {
-        "Field": "status",
-        "From": null,
-        "To": "pending"
-      },
-      {
-        "Field": "total",
-        "From": null,
-        "To": 99.99
-      },
-      {
-        "Field": "payment_token",
-        "From": "***",
-        "To": "***"
-      }
+      { "Field": "status", "From": null, "To": "pending" },
+      { "Field": "total", "From": null, "To": 99.99 },
+      { "Field": "payment_token", "From": "***", "To": "***" }
     ],
     "Description": "Order created",
     "Author": "john.doe",
@@ -97,16 +89,8 @@ logs := logger.Logs("order:12345")
   },
   {
     "Fields": [
-      {
-        "Field": "status",
-        "From": "pending",
-        "To": "shipped"
-      },
-      {
-        "Field": "tracking_number",
-        "From": null,
-        "To": "TRK123456789"
-      }
+      { "Field": "status", "From": "pending", "To": "shipped" },
+      { "Field": "tracking_number", "From": null, "To": "TRK123456789" }
     ],
     "Description": "Order shipped",
     "Author": "warehouse.system",
@@ -129,24 +113,14 @@ events := logger.Events("order:12345", "status")
     "Action": "create",
     "Author": "john.doe",
     "Description": "Order created",
-    "Payload": {
-      "status": {
-        "Data": "pending",
-        "Hidden": false
-      }
-    }
+    "Payload": { "status": { "Data": "pending",  "Hidden": false }}
   },
   {
     "Timestamp": "2026-01-18T17:06:53.126075226+07:00",
     "Action": "update",
     "Author": "warehouse.system",
     "Description": "Order shipped",
-    "Payload": {
-      "status": {
-        "Data": "shipped",
-        "Hidden": false
-      }
-    }
+    "Payload": { "status": { "Data": "shipped",  "Hidden": false }}
   }
 ]
 ```
@@ -155,7 +129,7 @@ events := logger.Events("order:12345", "status")
 
 `audit` не привязывается к способу хранения данных. Для этого используется интерфейс `Storage`.
 
-Пример простой реализации, которая сохраняет события в JSON-файл, есть в репозитории. Такое хранилище подключается через options pattern:
+[Пример простой реализации](https://github.com/w0rng/audit/blob/main/examples/custom_storage/main.go), которая сохраняет события в JSON-файл, есть в репозитории. Такое хранилище подключается через options pattern:
 
 ```go
 storage := NewJSONFileStorage("audit_events.json")
