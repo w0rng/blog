@@ -70,7 +70,50 @@ logger.Update(
 logs := logger.Logs("order:12345")
 ```
 
-Каждая запись содержит список полей с `from` и `to`, автора и описание.
+Каждая запись содержит список полей с `from` и `to`, автора и описание. Для вышеупомянутых логов данные следующие:
+```json
+[
+  {
+    "Fields": [
+      {
+        "Field": "status",
+        "From": null,
+        "To": "pending"
+      },
+      {
+        "Field": "total",
+        "From": null,
+        "To": 99.99
+      },
+      {
+        "Field": "payment_token",
+        "From": "***",
+        "To": "***"
+      }
+    ],
+    "Description": "Order created",
+    "Author": "john.doe",
+    "Timestamp": "2026-01-18T17:06:29.126233926+07:00"
+  },
+  {
+    "Fields": [
+      {
+        "Field": "status",
+        "From": "pending",
+        "To": "shipped"
+      },
+      {
+        "Field": "tracking_number",
+        "From": null,
+        "To": "TRK123456789"
+      }
+    ],
+    "Description": "Order shipped",
+    "Author": "warehouse.system",
+    "Timestamp": "2026-01-18T17:06:29.126239744+07:00"
+  }
+]
+```
 
 Если нужны более легковесные события, можно работать через `Events` и фильтровать их по полям:
 
@@ -78,7 +121,35 @@ logs := logger.Logs("order:12345")
 events := logger.Events("order:12345", "status")
 ```
 
-Это удобно для построения таймлайнов или агрегатов, например цепочки статусов заказа.
+Это удобно для построения таймлайнов или агрегатов, например цепочки статусов заказа:
+```json
+[
+  {
+    "Timestamp": "2026-01-18T17:06:53.12607001+07:00",
+    "Action": "create",
+    "Author": "john.doe",
+    "Description": "Order created",
+    "Payload": {
+      "status": {
+        "Data": "pending",
+        "Hidden": false
+      }
+    }
+  },
+  {
+    "Timestamp": "2026-01-18T17:06:53.126075226+07:00",
+    "Action": "update",
+    "Author": "warehouse.system",
+    "Description": "Order shipped",
+    "Payload": {
+      "status": {
+        "Data": "shipped",
+        "Hidden": false
+      }
+    }
+  }
+]
+```
 
 ## Кастомное хранилище
 
@@ -124,7 +195,8 @@ slog.Info(
 )
 ```
 
-Если в записи нет `entity` или уровень не проходит фильтр, событие не попадет в audit.
+Если в записи нет `entity` или уровень не проходит фильтр, событие не попадет в audit.  
+Плюс таких логов в том, что они будут видны и в системах сбора логов, и с ними можно работать как с аудит событиями через `.Logs`, `.Events`.
 
 ## Итог
 
