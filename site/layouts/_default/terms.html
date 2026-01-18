@@ -1,11 +1,5 @@
 {{ define "main" }}
 <nav class="back"><a href="/">← Главная</a></nav>
-
 <h1>Теги</h1>
-
-<p>
-  {{- range .Pages }}
-  <a href="{{ .RelPermalink }}">#{{ .Title }}</a>
-  {{- end }}
-</p>
+<p>{{- range .Pages }}<a href="{{ .RelPermalink }}">#{{ .Title }}</a> {{ end }}</p>
 {{ end }}

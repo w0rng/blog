@@ -9,7 +9,6 @@
   <title>{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }}{{ end }}</title>
   {{- $css := resources.Get "main.css" | minify | fingerprint }}
   <link rel="stylesheet" href="{{ $css.RelPermalink }}">
-  {{- if .Params.mathjax }}{{ partial "mathjax.html" }}{{ end }}
 </head>
 <body>
   {{- block "main" . }}{{ end }}

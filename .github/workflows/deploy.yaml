@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-
   workflow_dispatch:
 
 permissions:
@@ -15,10 +14,6 @@ permissions:
 concurrency:
   group: "pages"
   cancel-in-progress: false
-
-defaults:
-  run:
-    shell: bash
 
 jobs:
   build:
@@ -32,28 +27,20 @@ jobs:
           && sudo dpkg -i ${{ runner.temp }}/hugo.deb
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          submodules: recursive
-          fetch-depth: 0
       - name: Setup Pages
         id: pages
         uses: actions/configure-pages@v5
       - name: Build with Hugo
+        working-directory: site
         env:
           HUGO_CACHEDIR: ${{ runner.temp }}/hugo_cache
-          HUGO_ENVIRONMENT: production
           TZ: Asia/Krasnoyarsk
-        run: |
-          hugo \
-            --gc \
-            --minify \
-            --baseURL "${{ steps.pages.outputs.base_url }}/"
+        run: hugo --gc --minify --baseURL "${{ steps.pages.outputs.base_url }}/"
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./public
+          path: site/public
 
-  # Deployment job
   deploy:
     environment:
       name: github-pages

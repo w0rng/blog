@@ -1,16 +1,16 @@
 {{ define "main" }}
-<nav class="back"><a href="/">← Главная</a></nav>
-
-<h1>{{ .Title }}</h1>
+<h1>{{ .Site.Title }}</h1>
 
 {{ .Content }}
 
 <ul class="posts">
-  {{- range .Pages }}
+  {{- range .Site.RegularPages }}
   <li>
     <span class="date">{{ .Date.Format "02.01.2006" }}</span>
     <a href="{{ .RelPermalink }}">{{ .Title }}</a>
   </li>
   {{- end }}
 </ul>
+
+<p class="meta"><a href="/index.xml">RSS</a></p>
 {{ end }}

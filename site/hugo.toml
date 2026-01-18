@@ -1,10 +1,10 @@
 baseURL = 'https://abramov.blog/'
 languageCode = 'ru-ru'
 title = 'Abramov blog'
+contentDir = '../posts'
 
 [markup.highlight]
 noClasses = false
-guessSyntax = true
 
 [markup.tableOfContents]
 startLevel = 2
