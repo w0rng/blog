@@ -9,6 +9,8 @@
   <title>{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }}{{ end }}</title>
   {{- $css := resources.Get "main.css" | minify | fingerprint }}
   <link rel="stylesheet" href="{{ $css.RelPermalink }}">
+  <script data-goatcounter="https://w0rng.goatcounter.com/count"
+          async src="//gc.zgo.at/count.js"></script>
 </head>
 <body>
   {{- block "main" . }}{{ end }}
