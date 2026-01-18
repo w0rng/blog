@@ -1,217 +1,252 @@
-@import url('https://fonts.googleapis.com/css2?family=PT+Serif:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+/* Типографика по Бирману — минимализм и читаемость */
+
+:root {
+  --bg: #fff;
+  --text: #222;
+  --text-secondary: #666;
+  --link: #0055b8;
+  --link-visited: #6a4c93;
+  --code-bg: #f5f5f5;
+}
 
 @media (prefers-color-scheme: dark) {
-    body[a="auto"] {
-        --bg-color: #202020;
-        --primary-text-color: #C0C0C0;
-        --secondary-text-color: #282C34;
-        --link-color: #0080D4;
-        --visited-link-color: #C678DD;
-        --link-border: #20394E;
-        --hover-link: #f04020;
-        --hover-link-border: #562A22;
-        --highlight: #464E5D;
-    }
+  :root {
+    --bg: #1a1a1a;
+    --text: #e0e0e0;
+    --text-secondary: #999;
+    --link: #6cb4ff;
+    --link-visited: #c8a4ff;
+    --code-bg: #2a2a2a;
+  }
 }
 
-@media (prefers-color-scheme: light) {
-    body[a="auto"] {
-        --bg-color: #FFFFFF;
-        --primary-text-color: #000000;
-        --secondary-text-color: #595959;
-        --link-color: #0360A0;
-        --visited-link-color: #98b8c8;
-        --link-border: #DDE7F1;
-        --hover-link: #A03100;
-        --hover-link-border: #EDD6CF;
-        --highlight: #dae5ec;
-    }
-}
-
-body {
-    background-color: var(--bg-color);
-    color: var(--primary-text-color);
-    font-family: "PT Serif", serif;
-    font-size: 20px;
-    -webkit-font-smoothing: antialiased;
-    margin: 0;
-    padding: 2rem 1.5rem;
-    max-width: 720px;
-    line-height: 1.5em;
-
-    @media (min-width: 768px) {
-        padding: 4rem 2rem;
-    }
-}
-
-a {
-    color: var(--link-color);
-    border-bottom-color: var(--link-border);
-    text-decoration: none;
-    border-bottom-width: 1px;
-    border-bottom-style: solid;
-    transition: color 0.2s ease-out;
-
-    &:visited {
-        color: var(--visited-link-color);
-    }
-
-    &:hover {
-        color: var(--hover-link);
-        border-bottom-color: var(--hover-link-border);
-    }
-}
-
-details {
-    border: thin solid var(--primary-text-color);
-    padding: 1rem;
-}
-
-details summary {
-    color: var(--primary-text-color);
-    text-decoration: none;
-}
-
-details[open] summary {
-    border-bottom: 1px solid var(--primary-text-color);
-    margin-bottom: 0.5em;
-    padding-bottom: 0.5em;
-}
-
-pre {
-    background: var(--bg-color);
-    padding: 1em;
-    overflow-x: auto;
-}
-
-code {
-    text-size-adjust: 100%;
-    -ms-text-size-adjust: 100%;
-    -moz-text-size-adjust: 100%;
-    -webkit-text-size-adjust: 100%;
-
-    &:not(pre > code) {
-        background-color: var(--primary-text-color);
-        color: var(--bg-color);
-    }
-}
-
-table,
-th,
-td {
-    border: thin solid var(--primary-text-color);
-    border-collapse: collapse;
-    padding: 0.4rem;
-}
-
-table {
-    width: 100%;
-}
-
-.toc {
-    border: thin solid var(--primary-text-color);
-    padding: 1rem;
-}
-
-figcaption {
-    color: var(--secondary-text-color);
-    text-align: center;
-    opacity: 0.5;
-}
-
-blockquote {
-    border-left: 3px solid rgba(var(--primary-text-color), 0.3);
-    color: rgba(var(--primary-text-color), 0.8);
-    margin: 1.5em 0;
-    padding: 0.5em 1em;
-
-    p {
-        margin: 0;
-    }
+* {
+  box-sizing: border-box;
 }
 
 html {
-    height: 100%;
+  font-size: 18px;
 }
 
-h1 {
-    font-size: 2.2rem;
-    line-height: 1.2;
-    margin: 2em 0 1em;
-    font-family: Arial, serif;
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--text);
+  background: var(--bg);
+  max-width: 40rem;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+  -webkit-font-smoothing: antialiased;
 }
 
-h1.title {
-    margin-top: 0;
+/* Типографика */
+
+h1, h2, h3, h4 {
+  line-height: 1.25;
+  margin: 2em 0 0.5em;
 }
 
-h2 {
-    font-size: 1.8rem;
-    font-family: Arial, serif
-}
+h1 { font-size: 1.75rem; }
+h2 { font-size: 1.4rem; }
+h3 { font-size: 1.15rem; }
+h4 { font-size: 1rem; }
 
-h3 {
-    font-size: 1.5rem;
-}
-
-h4 {
-    font-size: 1.3rem;
-}
+h1:first-child,
+.title { margin-top: 0; }
 
 p {
-    margin: 1em 0;
-    hyphens: none;
-    overflow-wrap: normal;
-    word-break: normal;
+  margin: 1em 0;
+  hyphens: auto;
 }
 
+/* Ссылки */
+
+a {
+  color: var(--link);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+}
+
+a:visited {
+  color: var(--link-visited);
+}
+
+a:hover {
+  text-decoration-thickness: 2px;
+}
+
+/* Списки */
+
+ul, ol {
+  padding-left: 1.5em;
+}
 
 li {
-    margin: 0.4rem 0;
+  margin: 0.3em 0;
 }
 
-hr {
-    text-align: center;
-    border: 0;
-    margin: 2rem 0;
+/* Код */
 
-    &:before {
-        content: '/////'
-    }
-
-    &:after {
-        content: attr(data-content) '/////'
-    }
+code {
+  font-family: "SF Mono", Consolas, "Liberation Mono", Menlo, monospace;
+  font-size: 0.9em;
+  background: var(--code-bg);
+  padding: 0.15em 0.3em;
+  border-radius: 3px;
 }
+
+pre {
+  background: var(--code-bg);
+  padding: 1em;
+  overflow-x: auto;
+  border-radius: 4px;
+  line-height: 1.4;
+}
+
+pre code {
+  padding: 0;
+  background: none;
+}
+
+/* Подсветка кода — монохром */
+.highlight .c, .highlight .cm, .highlight .c1, .highlight .cs { opacity: 0.6; font-style: italic; } /* комментарии */
+.highlight .k, .highlight .kd, .highlight .kn, .highlight .kp, .highlight .kr, .highlight .kt { font-weight: bold; } /* ключевые слова */
+.highlight .s, .highlight .s1, .highlight .s2, .highlight .sb, .highlight .sc, .highlight .sd, .highlight .se, .highlight .sh, .highlight .si, .highlight .sx, .highlight .sr, .highlight .ss { opacity: 0.85; } /* строки */
+.highlight .na, .highlight .nb, .highlight .nc, .highlight .no, .highlight .nd, .highlight .ni, .highlight .ne, .highlight .nf, .highlight .nl, .highlight .nn, .highlight .nt, .highlight .nv { } /* имена */
+
+/* Цитаты */
+
+blockquote {
+  margin: 1.5em 0;
+  padding-left: 1em;
+  border-left: 3px solid var(--text-secondary);
+  color: var(--text-secondary);
+}
+
+blockquote p {
+  margin: 0;
+}
+
+/* Таблицы */
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5em 0;
+}
+
+th, td {
+  border: 1px solid var(--text-secondary);
+  padding: 0.5em;
+  text-align: left;
+}
+
+/* Изображения */
 
 img {
-    max-width: 150%;
-    display: block;
-    margin: 0 auto;
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 1.5em 0;
 }
 
-.post-meta {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    p {
-        margin: 0;
-    }
-
+figcaption {
+  color: var(--text-secondary);
+  font-size: 0.9em;
+  text-align: center;
+  margin-top: -1em;
 }
 
-@media (max-width: 820px) {
-    img {
-        max-width: 100%;
-    }
+/* Горизонтальная линия */
+
+hr {
+  border: none;
+  border-top: 1px solid var(--text-secondary);
+  margin: 2em 0;
 }
 
-footer {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    text-align: center;
-    padding: 1rem 0;
+/* Мета-информация */
+
+.meta {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+/* Список постов */
+
+.posts {
+  list-style: none;
+  padding: 0;
+}
+
+.posts li {
+  margin: 0.5em 0;
+}
+
+.posts .date {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  margin-right: 0.5em;
+}
+
+/* TOC */
+
+.toc {
+  background: var(--code-bg);
+  padding: 1em;
+  border-radius: 4px;
+  margin: 1.5em 0;
+}
+
+.toc ul {
+  margin: 0;
+}
+
+/* Details */
+
+details {
+  border: 1px solid var(--text-secondary);
+  padding: 1em;
+  border-radius: 4px;
+  margin: 1.5em 0;
+}
+
+details summary {
+  cursor: pointer;
+}
+
+details[open] summary {
+  margin-bottom: 0.5em;
+}
+
+/* Навигация */
+
+.back {
+  margin-bottom: 2em;
+}
+
+/* Теги */
+
+.tags {
+  margin-top: 2em;
+  padding-top: 1em;
+  border-top: 1px solid var(--text-secondary);
+}
+
+.tags a {
+  margin-right: 0.5em;
+}
+
+/* Адаптивность */
+
+@media (max-width: 600px) {
+  html {
+    font-size: 16px;
+  }
+
+  body {
+    padding: 1.5rem 1rem;
+  }
 }

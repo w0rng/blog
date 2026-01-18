@@ -1,1 +1,0 @@
-[rss](/index.xml) | [tg](https://t.me/w0rng) | [github](https://github.com/w0rng) | [cv](https://w0rng.ru/cv)

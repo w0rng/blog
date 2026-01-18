@@ -1,8 +1,14 @@
 {{ define "main" }}
-{{ partial "back_link.html" .}}
+<nav class="back"><a href="/">← Главная</a></nav>
 
-<h1>{{ .Title }}</h1>
+<h1>#{{ .Title }}</h1>
 
-{{ .Content }}
-{{ partial "post_list.html" (dict "context" .)}}
+<ul class="posts">
+  {{- range .Pages }}
+  <li>
+    <span class="date">{{ .Date.Format "02.01.2006" }}</span>
+    <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+  </li>
+  {{- end }}
+</ul>
 {{ end }}

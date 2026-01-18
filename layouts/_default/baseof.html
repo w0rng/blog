@@ -1,12 +1,17 @@
 <!DOCTYPE html>
-<html lang="{{ $.Site.LanguageCode }}">
-    {{- partial "head.html" . -}}
-    <body a="auto">
-        <main class="page-content" aria-label="Content">
-            <div class="w">
-                {{- block "main" . }}{{- end }}
-                {{ partial "footer.html" }}
-            </div>
-        </main>
-    </body>
+<html lang="{{ .Site.LanguageCode }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  {{- if .IsPage }}
+  <meta name="description" content="{{ .Summary }}">
+  {{- end }}
+  <title>{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }}{{ end }}</title>
+  {{- $css := resources.Get "main.css" | minify | fingerprint }}
+  <link rel="stylesheet" href="{{ $css.RelPermalink }}">
+  {{- if .Params.mathjax }}{{ partial "mathjax.html" }}{{ end }}
+</head>
+<body>
+  {{- block "main" . }}{{ end }}
+</body>
 </html>

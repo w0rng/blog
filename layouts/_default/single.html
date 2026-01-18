@@ -1,21 +1,20 @@
 {{ define "main" }}
-{{ partial "back_link.html" .}}
+<nav class="back"><a href="/">← Главная</a></nav>
 
 <article>
-    <p class="post-meta">
-        <time datetime="{{ .Date }}">
-            {{ .Date | time.Format site.Params.theme_config.date_format }}
-        </time>
-    </p>
+  <h1 class="title">{{ .Title }}</h1>
+  <p class="meta">{{ .Date.Format "2 января 2006" }}</p>
 
-    <h1>{{ .Title }}</h1>
+  {{- if .Params.toc }}
+  <nav class="toc">{{ .TableOfContents }}</nav>
+  {{- end }}
 
-    {{ if .Params.toc }}
-        <aside {{ if .Params.tocBorder }} class="toc" {{ end }}>
-            {{ .TableOfContents }}
-        </aside>
-    {{ end }}
+  {{ .Content }}
 
-    {{ .Content }}
+  {{- with .GetTerms "tags" }}
+  <div class="tags">
+    {{- range . }}<a href="{{ .RelPermalink }}">#{{ .LinkTitle }}</a>{{ end }}
+  </div>
+  {{- end }}
 </article>
 {{ end }}
