@@ -14,16 +14,16 @@
   {{- with .GetTerms "tags" }}
   <div class="tags">
     {{- range . }}<a href="{{ .RelPermalink }}">#{{ .LinkTitle }}</a>{{ end }}
+    <span data-goatcounter-visit-count></span>
   </div>
   {{- end }}
-  <p>⚆ <span data-goatcounter-visit-count></span></p>
 </article>
 
 <script>
   fetch('https://w0rng.goatcounter.com/counter/' + encodeURIComponent(location.pathname) + '.json')
     .then(r => r.json())
     .then(data => {
-      document.querySelector('[data-goatcounter-visit-count]').textContent = data.count;
+      document.querySelector('[data-goatcounter-visit-count]').textContent = "⚆ " + data.count;
     });
 </script>
 
