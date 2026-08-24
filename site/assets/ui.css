@@ -1,0 +1,714 @@
+/*  Дизайн-код. Один файл, подключается к голой разметке.
+    Всё вне слоёв перебивает библиотеку без !important —
+    проектные стили пишутся снаружи.  */
+
+@layer tokens, reset, base, components, utilities;
+
+@layer tokens {
+    :root {
+        color-scheme: light dark;
+
+        /*  Серые строго нейтральны: подмес тепла читается как кремовая заготовка.
+        Цветность каждого тона взята на 88% от границы sRGB — выше браузер
+        сжимает цвет обратно в охват и оттенок мутнеет. Синий обманчив:
+        на тоне 253 цветности вдвое меньше, чем на 264. Красный и зелёный
+        стоят на светлоте 0,52: тёмная метка в полсимвола выглядит чёрной.  */
+        --bg: light-dark(oklch(100% 0 0), oklch(15% 0 0));
+        --fill: light-dark(oklch(96.5% 0 0), oklch(20% 0 0));
+        --ink: light-dark(oklch(17% 0 0), oklch(95% 0 0));
+        --muted: light-dark(oklch(48% 0 0), oklch(62% 0 0));
+        --line: light-dark(oklch(89% 0 0), oklch(30% 0 0));
+        --accent: light-dark(oklch(46% 0.2 264), oklch(76% 0.108 264));
+        --danger: light-dark(oklch(52% 0.186 25), oklch(76% 0.126 25));
+        --success: light-dark(oklch(52% 0.144 145), oklch(76% 0.15 145));
+        --on-accent: light-dark(oklch(100% 0 0), oklch(15% 0 0));
+
+        /*  Подмешивание --ink темнит в светлой теме и светлит в тёмной  */
+        --accent-hover: color-mix(in oklch, var(--accent) 84%, var(--ink));
+        --fill-hover: color-mix(in oklch, var(--fill) 92%, var(--ink));
+
+        /*  Сетка 16/24: строка — шесть шагов по четыре пикселя.
+        Отступы кратны четырём, крупные — высоте строки.  */
+        --space-1: 0.25rem;
+        --space-2: 0.5rem;
+        --space-3: 1rem;
+        --space-4: 1.5rem;
+        --space-5: 3rem;
+        --space-6: 4.5rem;
+
+        --font:
+            ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+            sans-serif;
+        --font-mono:
+            ui-monospace, "SF Mono", "JetBrains Mono", Menlo, monospace;
+
+        --text-xs: 0.8125rem;
+        --text-sm: 0.875rem;
+        --text-md: 1rem;
+        --text-lg: 1.5rem;
+        --text-xl: clamp(2rem, 1.5rem + 2.2vw, 3rem);
+        --text-display: clamp(2.75rem, 1.1rem + 7vw, 6rem);
+
+        --radius: 4px;
+        --measure: 62ch;
+        --page: 62rem;
+        --fast: 120ms;
+    }
+}
+
+@layer reset {
+    *,
+    *::before,
+    *::after {
+        box-sizing: border-box;
+    }
+    * {
+        margin: 0;
+    }
+
+    body {
+        min-height: 100dvh;
+        font: var(--text-md)/1.5 var(--font);
+        color: var(--ink);
+        background: var(--bg);
+        -webkit-font-smoothing: antialiased;
+        /*  Автопереносы выключены: браузер рвёт русские слова плохо  */
+        hyphens: manual;
+    }
+
+    img,
+    svg,
+    video,
+    canvas {
+        display: block;
+        max-width: 100%;
+        height: auto;
+    }
+    input,
+    button,
+    textarea,
+    select {
+        font: inherit;
+        color: inherit;
+    }
+    p,
+    h1,
+    h2,
+    h3,
+    h4 {
+        overflow-wrap: break-word;
+    }
+
+    :focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 2px;
+    }
+    :focus:not(:focus-visible) {
+        outline: none;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+            animation-duration: 0.01ms !important;
+            transition-duration: 0.01ms !important;
+            scroll-behavior: auto !important;
+        }
+    }
+}
+
+@layer base {
+    /*  Каркас работает без классов: header, main и footer сами встают
+      в левоприжатую полосу, section сам берёт отбивку и линейку.
+      Полоса прижата влево, чтобы начало строки не ездило при ресайзе.  */
+    body > header,
+    body > main,
+    body > footer,
+    .page {
+        max-width: var(--page);
+        margin-inline: clamp(var(--space-3), 6vw, 9rem) var(--space-3);
+    }
+
+    body > header {
+        display: flex;
+        align-items: center;
+        gap: var(--space-4);
+        min-height: 3rem;
+        border-bottom: 1px solid var(--line);
+    }
+
+    body > footer {
+        padding-block: var(--space-5) var(--space-6);
+        border-top: 1px solid var(--line);
+        color: var(--muted);
+        font-size: var(--text-sm);
+    }
+
+    nav ul {
+        display: flex;
+        align-items: baseline;
+        flex-wrap: wrap;
+        gap: var(--space-3);
+        padding-inline-start: 0;
+        list-style: none;
+        font-size: var(--text-sm);
+    }
+
+    nav li + li {
+        margin-top: 0;
+    }
+    nav a {
+        color: var(--muted);
+        text-decoration: none;
+    }
+    nav a:hover,
+    nav a[aria-current] {
+        color: var(--ink);
+    }
+
+    main > section {
+        margin-top: 0;
+        padding-block: var(--space-6);
+        border-top: 1px solid var(--line);
+    }
+
+    main > section:first-child {
+        border-top: 0;
+    }
+
+    /*  Чем крупнее кегль, тем плотнее интерлиньяж и трекинг  */
+    h1,
+    h2,
+    h3,
+    h4 {
+        font-weight: 600;
+        line-height: 1.05;
+        text-wrap: balance;
+    }
+    h1 {
+        font-size: var(--text-xl);
+        letter-spacing: -0.025em;
+    }
+    h2 {
+        font-size: var(--text-lg);
+        line-height: 1.3333;
+        letter-spacing: -0.02em;
+    }
+    h3 {
+        font-size: var(--text-md);
+        line-height: 1.5;
+    }
+    h4 {
+        font-size: var(--text-xs);
+        line-height: 1.5;
+        font-weight: 500;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--muted);
+    }
+
+    /*  Первое правило раздаёт отбивку любым соседям, включая безымянные div,
+      поэтому в разметке не нужен ни один margin. Дальше правило внутреннего
+      и внешнего: отступ перед заголовком больше отступа после него, иначе
+      заголовок примыкает к предыдущему блоку, а не к своему тексту.  */
+    :is(main, section, article, aside) > * + * {
+        margin-top: var(--space-3);
+    }
+    :is(h1, h2, h3, h4, p, ul, ol, blockquote, pre, table, figure) + * {
+        margin-top: var(--space-3);
+    }
+    * + h2 {
+        margin-top: var(--space-5);
+    }
+    * + :is(h3, h4) {
+        margin-top: var(--space-4);
+    }
+    :is(h3, h4) + * {
+        margin-top: var(--space-2);
+    }
+
+    p,
+    ul,
+    ol,
+    blockquote,
+    figure {
+        max-width: var(--measure);
+    }
+    p {
+        text-wrap: pretty;
+    }
+    ul,
+    ol {
+        padding-inline-start: 1.1em;
+    }
+    li + li {
+        margin-top: var(--space-1);
+    }
+
+    /*  Ссылка помечена двумя признаками: цветом и подчёркиванием. Линия набрана
+      вполсилы, чтобы не спорить с цветом, и обходит хвосты «у», «р», «д».
+      :where обнуляет вес псевдокласса — иначе a:visited (0,1,1) перебивал бы
+      nav a (0,0,2) и красил навигацию.  */
+    a {
+        color: var(--accent);
+        text-decoration-line: underline;
+        text-decoration-thickness: 1px;
+        text-decoration-color: color-mix(
+            in oklch,
+            currentColor 45%,
+            transparent
+        );
+        text-underline-offset: 0.16em;
+        transition:
+            color var(--fast),
+            text-decoration-color var(--fast);
+    }
+
+    a:hover {
+        color: var(--accent-hover);
+        text-decoration-color: currentColor;
+    }
+    a:where(:visited) {
+        color: color-mix(in oklch, var(--accent) 65%, var(--muted));
+    }
+
+    strong {
+        font-weight: 600;
+    }
+    small {
+        font-size: var(--text-sm);
+        color: var(--muted);
+    }
+    q {
+        quotes: "«" "»" "„" "“";
+    }
+    hr {
+        border: 0;
+        border-top: 1px solid var(--line);
+        margin-block: var(--space-5);
+    }
+    blockquote {
+        font-size: var(--text-lg);
+        line-height: 1.3333;
+        letter-spacing: -0.02em;
+    }
+
+    code,
+    kbd,
+    samp {
+        font-family: var(--font-mono);
+        font-size: 0.88em;
+    }
+    :not(pre) > code {
+        color: var(--muted);
+    }
+
+    /*  Заливки нет: залитый блок обязан иметь поля больше интерлиньяжа,
+      а такие поля спорят с внешним отступом. Линейка снимает конфликт.  */
+    pre {
+        padding-inline-start: var(--space-3);
+        overflow-x: auto;
+        border-inline-start: 1px solid var(--line);
+        line-height: 1.4285;
+    }
+
+    /*  Собственная прокрутка вместо распирания страницы: max-content даёт
+      естественную ширину, min-width растягивает до полосы, max-width
+      включает прокрутку. Раскладка ячеек при этом не меняется.  */
+    table {
+        display: block;
+        width: max-content;
+        min-width: 100%;
+        max-width: 100%;
+        overflow-x: auto;
+        border-collapse: collapse;
+        font-size: var(--text-sm);
+        font-variant-numeric: tabular-nums;
+    }
+
+    th,
+    td {
+        padding: var(--space-2) var(--space-3) var(--space-2) 0;
+        text-align: start;
+        border-bottom: 1px solid var(--line);
+    }
+
+    th {
+        font-size: var(--text-xs);
+        font-weight: 500;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: var(--muted);
+    }
+
+    ::selection {
+        background: color-mix(in oklch, var(--accent) 20%, transparent);
+    }
+    ::placeholder {
+        color: var(--muted);
+    }
+}
+
+@layer components {
+    /*  Раскладка. Зазор меняется вторым словом в классе, а не переменной
+      в разметке: .stack.tight, .grid.narrow, .row.between  */
+    .stack {
+        --gap: var(--space-3);
+        display: flex;
+        flex-direction: column;
+        gap: var(--gap);
+    }
+    .row {
+        --gap: var(--space-3);
+        display: flex;
+        align-items: baseline;
+        flex-wrap: wrap;
+        gap: var(--gap);
+    }
+
+    .grid {
+        --gap: var(--space-5);
+        --col: 16rem;
+        display: grid;
+        gap: var(--gap);
+        grid-template-columns: repeat(
+            auto-fit,
+            minmax(min(var(--col), 100%), 1fr)
+        );
+    }
+
+    .stack.tight,
+    .row.tight,
+    .grid.tight {
+        --gap: var(--space-2);
+    }
+    .grid.narrow {
+        --col: 10rem;
+    }
+    .grid.wide {
+        --col: 22rem;
+    }
+    .row.between {
+        justify-content: space-between;
+    }
+    .row.end {
+        justify-content: flex-end;
+    }
+    .row.middle {
+        align-items: center;
+    }
+
+    /*  Гасит ритм там, где расстоянием управляет gap  */
+    :is(.stack, .row, .grid, .list) > * + * {
+        margin-top: 0;
+    }
+
+    /*  Титульный блок. Один на страницу: два таких гасят друг друга.  */
+    .hero {
+        margin-top: 0;
+        padding-block: clamp(var(--space-5), 7vw, 6rem) var(--space-6);
+    }
+    .hero > * + * {
+        margin-top: var(--space-4);
+    }
+    .hero > small {
+        display: block;
+    }
+
+    .hero > h1 {
+        font-size: var(--text-display);
+        line-height: 0.95;
+        letter-spacing: -0.04em;
+        max-width: 18ch;
+    }
+
+    .hero > p {
+        max-width: 44ch;
+        font-size: var(--text-lg);
+        line-height: 1.3333;
+        color: var(--muted);
+    }
+
+    /*  Набор записей. Коробок нет: строки разделяет волосяная линейка.  */
+    .list {
+        padding-inline-start: 0;
+        list-style: none;
+    }
+    .list > * {
+        padding-block: var(--space-3);
+        border-top: 1px solid var(--line);
+    }
+    .list > :last-child {
+        border-bottom: 1px solid var(--line);
+    }
+    .list a {
+        display: block;
+        color: inherit;
+        text-decoration: none;
+    }
+    .list a:hover {
+        color: var(--accent);
+    }
+
+    /*  Поле от линейки до заголовка — 24, не меньше интерлиньяжа. Поэтому
+      зазор в сетке 48: внешнее должно превышать внутреннее.  */
+    .card {
+        padding-top: var(--space-4);
+        border-top: 1px solid var(--ink);
+    }
+    a.card {
+        display: block;
+        color: inherit;
+        text-decoration: none;
+        transition:
+            border-color var(--fast),
+            color var(--fast);
+    }
+    a.card:hover {
+        border-top-color: var(--accent);
+        color: var(--accent);
+    }
+
+    /*  Крупное число с подписью: кегль работает вместо плашки  */
+    .metric > :first-child {
+        display: block;
+        font-size: var(--text-lg);
+        font-weight: 600;
+        line-height: 1.3333;
+        letter-spacing: -0.02em;
+        font-variant-numeric: tabular-nums;
+    }
+
+    .metric > * + * {
+        margin-top: 0;
+    }
+
+    /*  Метка квадратная, а не круглая. Круг — самая эгоистичная фигура:
+      у него собственный центр, он тянет внимание и не терпит соседства.  */
+    .status {
+        display: inline-flex;
+        align-items: baseline;
+        gap: 0.45em;
+        font-size: var(--text-sm);
+        color: var(--muted);
+        white-space: nowrap;
+    }
+
+    .status::before {
+        content: "";
+        flex: none;
+        width: 0.5em;
+        height: 0.5em;
+        translate: 0 -0.05em;
+        border-radius: 1px;
+        background: currentColor;
+    }
+
+    .status.ok::before {
+        background: var(--success);
+    }
+    .status.warn::before {
+        background: var(--accent);
+    }
+    .status.danger::before {
+        background: var(--danger);
+    }
+
+    /*  Врезка: линейка на полях вместо заливки  */
+    .note {
+        max-width: var(--measure);
+        padding-inline-start: var(--space-4);
+        border-inline-start: 2px solid var(--accent);
+    }
+
+    .note.danger {
+        border-inline-start-color: var(--danger);
+    }
+
+    /*  Высота 32 — восемь шагов сетки, без дробной арифметики. Боковое поле 12
+      против зазора 16 в ряду: внутреннее меньше внешнего, кнопки не слипаются.  */
+    button,
+    .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: var(--space-2);
+        min-height: 2rem;
+        padding-inline: 0.75rem;
+        border: 0;
+        border-radius: var(--radius);
+        background: var(--fill);
+        color: var(--ink);
+        font-size: var(--text-sm);
+        text-decoration: none;
+        white-space: nowrap;
+        cursor: pointer;
+        transition:
+            background var(--fast),
+            color var(--fast);
+    }
+
+    :is(button, .btn):hover {
+        background: var(--fill-hover);
+        color: var(--ink);
+    }
+    :is(button, .btn):disabled {
+        color: var(--muted);
+        pointer-events: none;
+    }
+
+    /*  aria-disabled намеренно оставляет кнопку в порядке обхода — в этом его
+      смысл. Здесь только вид: pointer-events гасил бы мышь, но Enter всё
+      равно срабатывал бы. Само действие обязан не выполнить обработчик.  */
+    :is(button, .btn)[aria-disabled="true"] {
+        color: var(--muted);
+        cursor: not-allowed;
+    }
+
+    :is(button, .btn).accent {
+        background: var(--accent);
+        color: var(--on-accent);
+    }
+    :is(button, .btn).accent:hover {
+        background: var(--accent-hover);
+        color: var(--on-accent);
+    }
+    :is(button, .btn).danger {
+        background: var(--danger);
+        color: var(--on-accent);
+    }
+    :is(button, .btn).danger:hover {
+        background: color-mix(in oklch, var(--danger) 84%, var(--ink));
+        color: var(--on-accent);
+    }
+    :is(button, .btn).quiet {
+        background: transparent;
+        color: var(--muted);
+    }
+    :is(button, .btn).quiet:hover {
+        background: transparent;
+        color: var(--ink);
+    }
+    :is(button, .btn).small {
+        min-height: 1.5rem;
+        padding-inline: 0.5rem;
+        font-size: var(--text-xs);
+    }
+
+    /*  Форма собирается на голых тегах: form держит ритм, label встаёт над
+      полем, small под полем становится подсказкой.  */
+    form {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-4);
+        max-width: 26rem;
+    }
+    form > * + * {
+        margin-top: 0;
+    }
+    form label {
+        display: block;
+        margin-bottom: var(--space-1);
+        font-size: var(--text-sm);
+        color: var(--muted);
+    }
+    form :is(input, select, textarea) + small {
+        display: block;
+        margin-top: var(--space-1);
+    }
+    form :has(> [aria-invalid="true"]) > small {
+        color: var(--danger);
+    }
+
+    /*  Подпись к флажку живёт в строке рядом с ним и набирается основным
+      цветом: это текст варианта, а не служебный ярлык поля.  */
+    form label:has(:is([type="checkbox"], [type="radio"])),
+    form :is([type="checkbox"], [type="radio"]) + label {
+        display: inline-flex;
+        align-items: baseline;
+        gap: 0.5em;
+        margin-bottom: 0;
+        font-size: var(--text-md);
+        color: var(--ink);
+    }
+
+    fieldset {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-2);
+        padding: 0;
+        border: 0;
+    }
+    legend {
+        padding: 0;
+        margin-bottom: var(--space-2);
+        font-size: var(--text-sm);
+        color: var(--muted);
+    }
+
+    input:where(:not([type="checkbox"], [type="radio"], [type="range"])),
+    select,
+    textarea {
+        width: 100%;
+        min-height: 2rem;
+        padding: var(--space-1) var(--space-2);
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: transparent;
+        font-size: var(--text-sm);
+        transition: border-color var(--fast);
+    }
+
+    :is(input, select, textarea):hover {
+        border-color: var(--muted);
+    }
+    :is(input, select, textarea)[aria-invalid="true"] {
+        border-color: var(--danger);
+    }
+    textarea {
+        min-height: 6rem;
+        resize: vertical;
+    }
+    input[type="range"] {
+        width: 100%;
+    }
+    input:is([type="range"], [type="checkbox"], [type="radio"]) {
+        accent-color: var(--accent);
+    }
+
+    /*  margin: auto возвращаем вручную — глобальный reset обнулил его.
+      Одинаковые поля по всем сторонам — признак слабой вёрстки.  */
+    dialog {
+        margin: auto;
+        max-width: min(28rem, calc(100vw - var(--space-4) * 2));
+        padding: var(--space-4) var(--space-5);
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: var(--bg);
+        color: var(--ink);
+    }
+
+    dialog::backdrop {
+        background: oklch(0% 0 0 / 0.35);
+    }
+}
+
+@layer utilities {
+    .muted {
+        color: var(--muted);
+    }
+    .mono {
+        font-family: var(--font-mono);
+        font-size: 0.88em;
+    }
+    .nums {
+        font-variant-numeric: tabular-nums;
+    }
+    .grow {
+        flex: 1;
+    }
+    .full {
+        max-width: none;
+    }
+}

@@ -1,14 +1,20 @@
 {{ define "main" }}
-<nav class="back"><a href="/">← Главная</a></nav>
+<section>
+  <nav class="back"><a href="/">← Главная</a></nav>
 
-<h1>#{{ .Title }}</h1>
+  <h1>#{{ .Title }}</h1>
 
-<ul class="posts">
-  {{- range .Pages }}
-  <li>
-    <span class="date">{{ .Date.Format "02.01.2006" }}</span>
-    <a href="{{ .RelPermalink }}">{{ .Title }}</a>
-  </li>
-  {{- end }}
-</ul>
+  <ul class="list">
+    {{- range .Pages }}
+    <li>
+      <a href="{{ .RelPermalink }}">
+        <div class="row between middle">
+          <h3>{{ .Title }}</h3>
+          <time class="date" datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "02.01.2006" }}</time>
+        </div>
+      </a>
+    </li>
+    {{- end }}
+  </ul>
+</section>
 {{ end }}

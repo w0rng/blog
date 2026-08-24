@@ -1,9 +1,10 @@
 {{ define "main" }}
+<section>
 <nav class="back"><a href="/">← Главная</a></nav>
 
 <article>
   <h1 class="title">{{ .Title }}</h1>
-  <p class="meta">{{ .Date.Format "2 января 2006" }}</p>
+  <p class="meta"><time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2 января 2006" }}</time></p>
 
   {{- if .Params.toc }}
   <nav class="toc">{{ .TableOfContents }}</nav>
@@ -12,9 +13,9 @@
   {{ .Content }}
 
   {{- with .GetTerms "tags" }}
-  <div class="tags">
+  <div class="tags row tight middle">
     {{- range . }}<a href="{{ .RelPermalink }}">#{{ .LinkTitle }}</a>{{ end }}
-    <span data-goatcounter-visit-count></span>
+    <span class="meta" data-goatcounter-visit-count></span>
   </div>
   {{- end }}
 </article>
@@ -43,5 +44,6 @@
         crossorigin="anonymous"
         async>
 </script>
+</section>
 
 {{ end }}

@@ -1,16 +1,18 @@
 {{ define "main" }}
-<h1>{{ .Site.Title }}</h1>
+<section class="home">
+  <h1>{{ .Site.Title }}</h1>
 
-{{ .Content }}
+  {{ .Content }}
 
-<ul class="posts">
-  {{- range .Site.RegularPages }}
-  <li>
-    <span class="date">{{ .Date.Format "02.01.2006" }}</span>
-    <a href="{{ .RelPermalink }}">{{ .Title }}</a>
-  </li>
-  {{- end }}
-</ul>
+  <ul class="posts">
+    {{- range .Site.RegularPages }}
+    <li>
+      <time class="date" datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "02.01.2006" }}</time>
+      <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+    </li>
+    {{- end }}
+  </ul>
 
-<p class="meta"><a href="/index.xml">RSS</a></p>
+  <p class="meta"><a href="/index.xml">RSS</a></p>
+</section>
 {{ end }}

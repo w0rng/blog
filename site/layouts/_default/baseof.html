@@ -7,12 +7,16 @@
   <meta name="description" content="{{ .Summary }}">
   {{- end }}
   <title>{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }}{{ end }}</title>
+  {{- $ui := resources.Get "ui.css" | minify | fingerprint }}
   {{- $css := resources.Get "main.css" | minify | fingerprint }}
+  <link rel="stylesheet" href="{{ $ui.RelPermalink }}">
   <link rel="stylesheet" href="{{ $css.RelPermalink }}">
   <script data-goatcounter="https://w0rng.goatcounter.com/count"
           async src="//gc.zgo.at/count.js"></script>
 </head>
 <body>
-  {{- block "main" . }}{{ end }}
+  <main>
+    {{- block "main" . }}{{ end }}
+  </main>
 </body>
 </html>

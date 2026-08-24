@@ -1,254 +1,77 @@
-/* Типографика по Бирману — минимализм и читаемость */
-
 :root {
-  --bg: #fff;
-  --text: #222;
-  --text-secondary: #666;
-  --link: #0055b8;
-  --link-visited: #6a4c93;
-  --code-bg: #f5f5f5;
+    --measure: 68ch;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #1a1a1a;
-    --text: #e0e0e0;
-    --text-secondary: #999;
-    --link: #6cb4ff;
-    --link-visited: #c8a4ff;
-    --code-bg: #2a2a2a;
-  }
+.meta,
+.date {
+    color: var(--muted);
+    font-size: var(--text-sm);
 }
 
-* {
-  box-sizing: border-box;
+.home {
+    padding-block: var(--space-5) var(--space-6);
 }
-
-html {
-  font-size: 18px;
-}
-
-body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-  font-size: 1rem;
-  line-height: 1.6;
-  color: var(--text);
-  background: var(--bg);
-  max-width: 40rem;
-  margin: 0 auto;
-  padding: 2rem 1.5rem;
-  -webkit-font-smoothing: antialiased;
-}
-
-/* Типографика */
-
-h1, h2, h3, h4 {
-  line-height: 1.25;
-  margin: 2em 0 0.5em;
-}
-
-h1 { font-size: 1.75rem; }
-h2 { font-size: 1.4rem; }
-h3 { font-size: 1.15rem; }
-h4 { font-size: 1rem; }
-
-h1:first-child,
-.title { margin-top: 0; }
-
-p {
-  margin: 1em 0;
-  hyphens: auto;
-}
-
-/* Ссылки */
-
-a {
-  color: var(--link);
-  text-decoration: underline;
-  text-decoration-thickness: 1px;
-  text-underline-offset: 2px;
-}
-
-a:visited {
-  color: var(--link-visited);
-}
-
-a:hover {
-  text-decoration-thickness: 2px;
-}
-
-/* Списки */
-
-ul, ol {
-  padding-left: 1.5em;
-}
-
-li {
-  margin: 0.3em 0;
-}
-
-/* Код */
-
-code {
-  font-family: "SF Mono", Consolas, "Liberation Mono", Menlo, monospace;
-  font-size: 0.9em;
-  background: var(--code-bg);
-  padding: 0.15em 0.3em;
-  border-radius: 3px;
-}
-
-pre {
-  background: var(--code-bg);
-  padding: 1em;
-  overflow-x: auto;
-  border-radius: 4px;
-  line-height: 1.4;
-}
-
-pre code {
-  padding: 0;
-  background: none;
-}
-
-/* Подсветка кода — монохром */
-.highlight .c, .highlight .cm, .highlight .c1, .highlight .cs { opacity: 0.6; font-style: italic; } /* комментарии */
-.highlight .k, .highlight .kd, .highlight .kn, .highlight .kp, .highlight .kr, .highlight .kt { font-weight: bold; } /* ключевые слова */
-.highlight .s, .highlight .s1, .highlight .s2, .highlight .sb, .highlight .sc, .highlight .sd, .highlight .se, .highlight .sh, .highlight .si, .highlight .sx, .highlight .sr, .highlight .ss { opacity: 0.85; } /* строки */
-.highlight .na, .highlight .nb, .highlight .nc, .highlight .no, .highlight .nd, .highlight .ni, .highlight .ne, .highlight .nf, .highlight .nl, .highlight .nn, .highlight .nt, .highlight .nv { } /* имена */
-
-/* Цитаты */
-
-blockquote {
-  margin: 1.5em 0;
-  padding-left: 1em;
-  border-left: 3px solid var(--text-secondary);
-  color: var(--text-secondary);
-}
-
-blockquote p {
-  margin: 0;
-}
-
-/* Таблицы */
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin: 1.5em 0;
-}
-
-th, td {
-  border: 1px solid var(--text-secondary);
-  padding: 0.5em;
-  text-align: left;
-}
-
-/* Изображения */
-
-img {
-  max-width: 100%;
-  height: auto;
-  display: block;
-  margin: 1.5em 0;
-}
-
-figcaption {
-  color: var(--text-secondary);
-  font-size: 0.9em;
-  text-align: center;
-  margin-top: -1em;
-}
-
-/* Горизонтальная линия */
-
-hr {
-  border: none;
-  border-top: 1px solid var(--text-secondary);
-  margin: 2em 0;
-}
-
-/* Мета-информация */
-
-.meta {
-  color: var(--text-secondary);
-  font-size: 0.9rem;
-}
-
-/* Список постов */
 
 .posts {
-  list-style: none;
-  padding: 0;
+    padding-inline-start: 0;
+    list-style: none;
 }
 
-.posts li {
-  margin: 0.5em 0;
+.posts li + li {
+    margin-top: var(--space-2);
 }
 
 .posts .date {
-  color: var(--text-secondary);
-  font-size: 0.9rem;
-  margin-right: 0.5em;
+    margin-inline-end: var(--space-2);
 }
 
-/* TOC */
+.anchor {
+    color: var(--muted);
+    text-decoration: none;
+}
 
 .toc {
-  background: var(--code-bg);
-  padding: 1em;
-  border-radius: 4px;
-  margin: 1.5em 0;
+    max-width: var(--measure);
+    padding-inline-start: var(--space-4);
+    border-inline-start: 1px solid var(--line);
 }
 
 .toc ul {
-  margin: 0;
+    margin: 0;
 }
 
-/* Details */
+.tags {
+    padding-top: var(--space-3);
+    border-top: 1px solid var(--line);
+}
+
+.highlight .c,
+.highlight .cm,
+.highlight .c1,
+.highlight .cs {
+    opacity: 0.6;
+    font-style: italic;
+}
+
+.highlight .k,
+.highlight .kd,
+.highlight .kn,
+.highlight .kp,
+.highlight .kr,
+.highlight .kt {
+    font-weight: 600;
+}
 
 details {
-  border: 1px solid var(--text-secondary);
-  padding: 1em;
-  border-radius: 4px;
-  margin: 1.5em 0;
+    max-width: var(--measure);
+    padding-block: var(--space-3);
+    border-block: 1px solid var(--line);
 }
 
 details summary {
-  cursor: pointer;
+    cursor: pointer;
 }
 
-details[open] summary {
-  margin-bottom: 0.5em;
-}
-
-/* Навигация */
-
-.back {
-  margin-bottom: 2em;
-}
-
-/* Теги */
-
-.tags {
-  margin-top: 2em;
-  padding-top: 1em;
-  border-top: 1px solid var(--text-secondary);
-  flex-wrap: wrap;
-  display: flex;
-}
-
-.tags a {
-  margin-right: 0.5em;
-}
-
-/* Адаптивность */
-
-@media (max-width: 600px) {
-  html {
-    font-size: 16px;
-  }
-
-  body {
-    padding: 1.5rem 1rem;
-  }
+.giscus {
+    margin-top: var(--space-5);
 }
