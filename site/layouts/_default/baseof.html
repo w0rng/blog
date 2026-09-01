@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ .Site.LanguageCode }}">
+<html lang="{{ .Site.Language.Locale }}">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -7,9 +7,9 @@
   <meta name="description" content="{{ .Summary }}">
   {{- end }}
   <title>{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }}{{ end }}</title>
-  {{- $ui := resources.Get "ui.css" | minify | fingerprint }}
-  {{- $css := resources.Get "main.css" | minify | fingerprint }}
-  <link rel="stylesheet" href="{{ $ui.RelPermalink }}">
+  {{- $ui := resources.Get "ui.css" }}
+  {{- $main := resources.Get "main.css" }}
+  {{- $css := slice $ui $main | resources.Concat "main.css" | minify | fingerprint }}
   <link rel="stylesheet" href="{{ $css.RelPermalink }}">
   <script data-goatcounter="https://w0rng.goatcounter.com/count"
           async src="//gc.zgo.at/count.js"></script>

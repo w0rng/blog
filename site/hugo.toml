@@ -1,5 +1,5 @@
 baseURL = 'https://abramov.blog/'
-languageCode = 'ru-ru'
+locale = 'ru-RU'
 title = 'Abramov blog'
 contentDir = '../posts'
 

@@ -4,7 +4,7 @@
     <title>{{ .Site.Title }}</title>
     <link>{{ .Site.BaseURL }}</link>
     <description>{{ .Site.Title }}</description>
-    <language>{{ .Site.LanguageCode }}</language>
+    <language>{{ .Site.Language.Locale }}</language>
     <atom:link href="{{ .Permalink }}" rel="self" type="application/rss+xml" />
     {{- range .Site.RegularPages }}
     <item>
