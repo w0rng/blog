@@ -212,10 +212,10 @@
       поэтому в разметке не нужен ни один margin. Дальше правило внутреннего
       и внешнего: отступ перед заголовком больше отступа после него, иначе
       заголовок примыкает к предыдущему блоку, а не к своему тексту.  */
-    :is(main, section, article, aside) > * + * {
+    :where(main, section, article, aside) > * + * {
         margin-top: var(--space-3);
     }
-    :is(h1, h2, h3, h4, p, ul, ol, blockquote, pre, table, figure) + * {
+    :where(h1, h2, h3, h4, p, ul, ol, blockquote, pre, table, figure) + * {
         margin-top: var(--space-3);
     }
     * + h2 {

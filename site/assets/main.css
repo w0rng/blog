@@ -1,7 +1,3 @@
-:root {
-    --measure: 68ch;
-}
-
 .meta,
 .date {
     color: var(--muted);
@@ -13,16 +9,24 @@
 }
 
 .posts {
+    max-width: var(--measure);
     padding-inline-start: 0;
     list-style: none;
+}
+
+.posts li {
+    display: grid;
+    grid-template-columns: max-content minmax(0, 1fr);
+    align-items: baseline;
+    gap: var(--space-3);
 }
 
 .posts li + li {
     margin-top: var(--space-2);
 }
 
-.posts .date {
-    margin-inline-end: var(--space-2);
+.back {
+    margin-bottom: var(--space-5);
 }
 
 .anchor {
@@ -41,6 +45,7 @@
 }
 
 .tags {
+    margin-top: var(--space-5);
     padding-top: var(--space-3);
     border-top: 1px solid var(--line);
 }
@@ -64,7 +69,7 @@
 
 details {
     max-width: var(--measure);
-    padding-block: var(--space-3);
+    padding-block: var(--space-4);
     border-block: 1px solid var(--line);
 }
 
